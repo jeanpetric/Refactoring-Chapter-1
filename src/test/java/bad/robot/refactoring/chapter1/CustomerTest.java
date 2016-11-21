@@ -2,8 +2,7 @@ package bad.robot.refactoring.chapter1;
 
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class CustomerTest {
 
@@ -15,46 +14,53 @@ public class CustomerTest {
 
     @Test
     public void basicChildrenRental() {
+        String expectedResult = expectedMessageFor("The Hulk", 1.5, 1.5, 1);
         customer.addRental(new Rental(THE_HULK, 2));
-        assertThat(customer.statement(), is(expectedMessageFor("The Hulk", 1.5, 1.5, 1)));
+        assertEquals(customer.statement(), expectedResult);
     }
 
     @Test
     public void shouldDiscountChildrensRentals() {
+        String expectedResult = expectedMessageFor("The Hulk", 3.0, 3.0, 1);
         customer.addRental(new Rental(THE_HULK, 4));
-        assertThat(customer.statement(), is(expectedMessageFor("The Hulk", 3.0, 3.0, 1)));
+        assertEquals(customer.statement(), expectedResult);
     }
 
     @Test
     public void basicNewReleaseRental() {
+        String expectedResult = expectedMessageFor("Iron Man 4", 3.0, 3.0, 1);
         customer.addRental(new Rental(IRON_MAN, 1));
-        assertThat(customer.statement(), is(expectedMessageFor("Iron Man 4", 3.0, 3.0, 1)));
+        assertEquals(customer.statement(), expectedResult);
     }
 
     @Test
     public void shouldNotDiscountNewReleaseRentalsButBonusFrequentRenterPoints() {
+        String expectedResult = expectedMessageFor("Iron Man 4", 12.0, 12.0, 2);
         customer.addRental(new Rental(IRON_MAN, 4));
-        assertThat(customer.statement(), is(expectedMessageFor("Iron Man 4", 12.0, 12.0, 2)));
+        assertEquals(customer.statement(), expectedResult);
     }
 
     @Test
     public void basicRegularRental() {
+        String expectedResult = expectedMessageFor("Spiderman", 2.0, 2.0, 1);
         customer.addRental(new Rental(SPIDER_MAN, 2));
-        assertThat(customer.statement(), is(expectedMessageFor("Spiderman", 2.0, 2.0, 1)));
+        assertEquals(customer.statement(), expectedResult);
     }
 
     @Test
     public void shouldDiscountRegularRental() {
+        String expectedResult = expectedMessageFor("Spiderman", 5.0, 5.0, 1);
         customer.addRental(new Rental(SPIDER_MAN, 4));
-        assertThat(customer.statement(), is(expectedMessageFor("Spiderman", 5.0, 5.0, 1)));
+        assertEquals(customer.statement(), expectedResult);
     }
 
     @Test
     public void shouldSumVariousRentals() {
+        String expectedResult = "Rental record for fred\n\tThe Hulk\t1.5\n\tSpiderman\t2.0\n\tIron Man 4\t9.0\nAmount owed is 12.5\nYou earned 4 frequent renter points";
         customer.addRental(new Rental(THE_HULK, 2));
         customer.addRental(new Rental(SPIDER_MAN, 1));
         customer.addRental(new Rental(IRON_MAN, 3));
-        assertThat(customer.statement(), is("Rental record for fred\n\tThe Hulk\t1.5\n\tSpiderman\t2.0\n\tIron Man 4\t9.0\nAmount owed is 12.5\nYou earned 4 frequent renter points"));
+        assertEquals(customer.statement(), expectedResult);
     }
 
     private static String expectedMessageFor(String rental, double price, double total, int renterPointsEarned) {
